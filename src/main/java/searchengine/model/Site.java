@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,5 +29,10 @@ public class Site {
     private String url;
     @Column(name = "name_site", columnDefinition = "VARCHAR(255)" ,nullable = false)
     private String nameSite;
+    @OneToMany(mappedBy = "siteId", fetch = FetchType.LAZY)
+    private List<Page> pageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "siteId", fetch = FetchType.LAZY)
+    private List<Lemma> lemmaList = new ArrayList<>();
 
 }

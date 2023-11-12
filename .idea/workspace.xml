@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="" />
+    <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Search.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/LemmaRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/PageRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/SearchRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/SiteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/EnumForTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/EnumForTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Index.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Lemma.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Lemma.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Page.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Site.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,10 +29,16 @@
       <list>
         <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="ramil" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -91,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699460722167</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="connection sql">
+      <created>1699461211785</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1699461211786</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
