@@ -2,9 +2,12 @@ package searchengine.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +25,9 @@ public class Site {
     @Column(name = "status", nullable = false)
     private EnumForTable status;
     @Column(name = "status_time", nullable = false)
-    private Date status_time;
+    //@CreationTimestamp
+    @UpdateTimestamp
+    private Instant status_time;
     @Column(name = "last_error", columnDefinition = "TEXT" ,nullable = false)
     private String last_error;
     @Column(name = "url", columnDefinition = "VARCHAR(255)" ,nullable = false)
