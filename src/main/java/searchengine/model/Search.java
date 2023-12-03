@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "index")
+@Table(name = "search")
 public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

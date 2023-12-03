@@ -1,5 +1,7 @@
 package searchengine.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -9,8 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "page")
+@Getter
+@Setter
 public class Page {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -4,20 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/LemmaRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/PageRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/SearchRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/SiteRepository.java" afterDir="false" />
+    <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="I am creating a Class INDEXING-SITE">
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/Page.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/PagesList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/indexingSite/IndexingSite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/EnumForTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/EnumForTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Index.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Search.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Lemma.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Lemma.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Page.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Site.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Search.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +91,18 @@
       <option name="presentableId" value="Default" />
       <updated>1699214177838</updated>
     </task>
+    <task id="LOCAL-00001" summary="I need Help">
+      <created>1701542332292</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1701542332292</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="I need Help" />
+    <option name="LAST_COMMIT_MESSAGE" value="I need Help" />
   </component>
 </project>
