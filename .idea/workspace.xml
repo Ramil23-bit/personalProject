@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="I am creating a Class INDEXING-SITE">
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/Page.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/PagesList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/indexingSite/IndexingSite.java" afterDir="false" />
+    <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/ConfigurationBean.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/config/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/Page.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/config/PagesList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/config/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/Site.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/config/SitesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/SitesList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Page.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Search.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/indexingSite/IndexingSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/indexingSite/IndexingSite.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +51,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/babol/Skilbox/java_basics/SQLAndHibernate&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/babol/Downloads/MyBookShopApp_m3_6&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -98,11 +99,19 @@
       <option name="project" value="LOCAL" />
       <updated>1701542332292</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="I am creating a Class INDEXING-SITE">
+      <created>1701633480596</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1701633480596</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="I need Help" />
-    <option name="LAST_COMMIT_MESSAGE" value="I need Help" />
+    <MESSAGE value="I am creating a Class INDEXING-SITE" />
+    <option name="LAST_COMMIT_MESSAGE" value="I am creating a Class INDEXING-SITE" />
   </component>
 </project>
