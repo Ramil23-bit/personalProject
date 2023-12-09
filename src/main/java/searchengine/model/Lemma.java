@@ -22,5 +22,5 @@ public class Lemma {
         @Column(name = "frequency", nullable = false)
         private Integer frequency;
         @OneToMany(mappedBy = "lemmaId", fetch = FetchType.LAZY)
-        private List<Search> searchList = new ArrayList<>();
+        private List<Search> searchList;
 }

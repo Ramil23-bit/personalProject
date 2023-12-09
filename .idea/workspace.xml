@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/ConfigurationBean.java" afterDir="false" />
+    <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="correction IndexingSite">
+      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/services/StatisticSiteServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/config/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/Page.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/config/PagesList.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/config/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/Site.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/config/SitesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/config/SitesList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/indexingSite/IndexingSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/indexingSite/IndexingSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/indexingSite/IndexingSite.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/model/Lemma.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/model/Lemma.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,12 +104,20 @@
       <option name="project" value="LOCAL" />
       <updated>1701633480596</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="correction IndexingSite">
+      <created>1701885656760</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1701885656761</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="I need Help" />
     <MESSAGE value="I am creating a Class INDEXING-SITE" />
-    <option name="LAST_COMMIT_MESSAGE" value="I am creating a Class INDEXING-SITE" />
+    <MESSAGE value="correction IndexingSite" />
+    <option name="LAST_COMMIT_MESSAGE" value="correction IndexingSite" />
   </component>
 </project>
