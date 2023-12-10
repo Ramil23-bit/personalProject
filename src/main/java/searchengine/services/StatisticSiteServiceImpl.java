@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
+import searchengine.exception.StatisticSiteException;
 import searchengine.model.EnumForTable;
 import searchengine.model.Page;
 import searchengine.model.Site;
@@ -13,10 +14,11 @@ import searchengine.repository.SiteRepository;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class StatisticSiteServiceImpl extends RuntimeException {
+public class StatisticSiteServiceImpl {
     private final SiteRepository siteRepository;
     private final PageRepository pageRepository;
 
@@ -28,24 +30,25 @@ public class StatisticSiteServiceImpl extends RuntimeException {
 
     public void createDataInTablePage(String url) {
 
-        if (!roundSite(url)) {
+        try {
+            roundSite(url);
+        }catch (IllegalArgumentException e){
             throw new IllegalArgumentException("Data entered incorrectly");
         }
     }
 
     @Transactional
     public void deleteSite(String url) {
-        try {
-            if (url.isEmpty()) {
-                siteRepository.deleteAll();
-                pageRepository.deleteAll();
-            }
-        } catch (RuntimeException e) {
-            e.getMessage();
+
+        if (!url.isEmpty()) {
+            throw new IllegalArgumentException();
+        }else {
+            Optional<Site> deleteDataSite = siteRepository.deleteDataBySite(url);
+            Optional<Page> deleteDataPage = pageRepository.deleteDataByPage(url);
         }
     }
 
-    public void connectionSite(String url){
+    private boolean roundSite(String url) {
         Document doc = null;
 
         try {
@@ -59,31 +62,38 @@ public class StatisticSiteServiceImpl extends RuntimeException {
         }
 
         String title = doc.title();
-    }
-
-    private boolean roundSite(String url) {
-        Element elementSite = new Element(url);
-
         Site site = new Site();
         Page page = new Page();
-        System.out.printf("Execute task on thread %s%n", Thread.currentThread());
-        String attribute = elementSite.attr("href");
 
-        if (attribute.startsWith(url)) {
-            try {
-                page.setContent(String.valueOf(attribute.replaceFirst("https://", "").split("/").length));
-                site.setStatus_time(Instant.now());
-                page.setPath(attribute);
-                if(!page.getContent().isEmpty()){
-                    siteRepository.save(site);
-                    pageRepository.save(page);
-                }
-            } catch (Exception e) {
-                site.setStatus(EnumForTable.INDEXING);
+        try {
+            controlSite(url);
+            if (!page.getContent().isEmpty()) {
+                siteRepository.save(site);
+                pageRepository.save(page);
             }
+        } catch (Exception e) {
+            site.setStatus(EnumForTable.INDEXING);
         }
         return true;
     }
+
+    private boolean controlSite(String url){
+        Element elementSite = new Element(url);
+        Page page = new Page();
+        Site site = new Site();
+        String attribute = elementSite.attr("href");
+        System.out.printf("Execute task on thread %s%n", Thread.currentThread());
+
+        if(attribute.startsWith(url)){
+            page.setContent(String.valueOf(attribute.replaceFirst("https://", "").split("/").length));
+            site.setStatus_time(Instant.now());
+            page.setPath(attribute);
+            return true;
+        }else{
+            throw new StatisticSiteException();
+        }
+    }
+
 }
 
 /*
