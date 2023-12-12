@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a56af709-9edb-499b-8e0f-4bf55d0a19a7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/searchengine/exception/StatisticSiteException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/repository/PageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/PageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/repository/SiteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/repository/SiteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/controllers/ApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/exception/StatisticSiteException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/exception/StatisticSiteException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/searchengine/services/StatisticSiteServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/searchengine/services/StatisticSiteServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +116,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702152228393</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="I add method CONTROL-SITE. I am correction method delete and interfaces">
+      <created>1702224920228</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702224920228</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -125,6 +131,7 @@
     <MESSAGE value="I am creating a Class INDEXING-SITE" />
     <MESSAGE value="correction IndexingSite" />
     <MESSAGE value="correction StatisticSiteServiceImpl" />
-    <option name="LAST_COMMIT_MESSAGE" value="correction StatisticSiteServiceImpl" />
+    <MESSAGE value="I add method CONTROL-SITE. I am correction method delete and interfaces" />
+    <option name="LAST_COMMIT_MESSAGE" value="I add method CONTROL-SITE. I am correction method delete and interfaces" />
   </component>
 </project>

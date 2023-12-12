@@ -14,9 +14,11 @@ import searchengine.model.EnumForTable;
 import searchengine.model.Site;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
+import searchengine.services.StatisticSiteServiceImpl;
 import searchengine.services.StatisticsService;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @Configuration
@@ -36,8 +38,6 @@ public class ApiController {
 
     @GetMapping("/startIndexing")
     public HashMap<String, Boolean> startIndexing(){
-        String url = "";
-        HashMap<String, Boolean> arraySite = new HashMap<>();
 
         return arraySite;
     }
