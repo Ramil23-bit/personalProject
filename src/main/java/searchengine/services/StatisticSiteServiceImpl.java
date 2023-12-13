@@ -1,6 +1,5 @@
 package searchengine.services;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,11 +14,7 @@ import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 
 import javax.transaction.Transactional;
-import java.awt.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -50,8 +45,8 @@ public class StatisticSiteServiceImpl  {
         if (!url.isEmpty()) {
             throw new IllegalArgumentException();
         }
-        Optional<Site> deleteDataSite = siteRepository.deleteDataBySite(url);
-        Optional<Page> deleteDataPage = pageRepository.deleteDataByPage(url);
+        Long deleteDataSite = siteRepository.deleteByUrl(url);
+        Long deleteDataPage = pageRepository.deleteByPath(url);
     }
 
     private boolean roundSite(String url) {
@@ -99,18 +94,17 @@ public class StatisticSiteServiceImpl  {
         page.setPath(attribute);
     }
 
-    public void roundSites() throws ExecutionException, InterruptedException {
-        List<Site> urlsSite = new ArrayList<>();
+    public Boolean roundSites() throws ExecutionException, InterruptedException {
         SitesList sitesList = new SitesList();
-        urlsSite.add((Site) sitesList.getSites());
 
         CompletableFuture<String> future = new CompletableFuture<>();
-        for(int i = 0; i <= urlsSite.size(); i++){
-            future = CompletableFuture.supplyAsync(urlsSite::toString);
+        for(int i = 0; i <= sitesList.getSites().size(); i++){
+            int finalI = i;
+            future = CompletableFuture.supplyAsync(()-> String.valueOf(roundSite(String.valueOf(sitesList.getSites().get(finalI)))));
         }
         future.get();
+        return false;
     }
-
 }
 
 /*

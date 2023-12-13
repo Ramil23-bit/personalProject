@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PageRepository extends CrudRepository<Page, Integer> {
-    Optional<Page> deleteDataByPage(String url);
+    Long deleteByPath(String url);
 }
