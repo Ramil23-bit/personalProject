@@ -8,14 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import searchengine.dto.statistics.StatisticsResponse;
-import searchengine.exception.StatisticSiteException;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 import searchengine.services.StatisticSiteServiceImpl;
 import searchengine.services.StatisticsService;
-
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @Configuration
@@ -34,8 +30,8 @@ public class ApiController {
     }
 
     @GetMapping("/startIndexing")
-    public Boolean startIndexing() throws ExecutionException, InterruptedException {
-        return siteService.roundSites();
+    public ResponseEntity<Boolean> startIndexing(){
+        return ResponseEntity.ok(siteService.roundSites());
     }
 
 }

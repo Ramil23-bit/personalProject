@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import searchengine.config.SitesList;
+import searchengine.dto.statistics.StatisticsSiteResponse;
 import searchengine.exception.StatisticSiteException;
 import searchengine.model.EnumForTable;
 import searchengine.model.Page;
@@ -15,14 +17,16 @@ import searchengine.repository.SiteRepository;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
 @Service
 @RequiredArgsConstructor
 public class StatisticSiteServiceImpl  {
     private final SiteRepository siteRepository;
     private final PageRepository pageRepository;
+    private final SitesList sitesList;
 
     public void createEntry() {
         Site site = new Site();
@@ -94,16 +98,33 @@ public class StatisticSiteServiceImpl  {
         page.setPath(attribute);
     }
 
-    public Boolean roundSites() throws ExecutionException, InterruptedException {
-        SitesList sitesList = new SitesList();
+    public Boolean roundSites() {
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        ExecutorService executorService = null;
+        sitesList.getSites().forEach(siteList->{
+            CompletableFuture<Void> future = CompletableFuture.runAsync(()-> roundSite(String.valueOf(siteList)), executorService);
+            StatisticsSiteResponse siteResponse = new StatisticsSiteResponse();
+            if(!executorService.isShutdown()){
+                siteResponse.setOutputError("error: Индексация уже запущена");
+            }else {
+                siteResponse.setOutputResult("result: ");
+                siteResponse.setResult(true);
+            }
 
-        CompletableFuture<String> future = new CompletableFuture<>();
-        for(int i = 0; i <= sitesList.getSites().size(); i++){
-            int finalI = i;
-            future = CompletableFuture.supplyAsync(()-> String.valueOf(roundSite(String.valueOf(sitesList.getSites().get(finalI)))));
-        }
-        future.get();
-        return false;
+            try {
+                Thread.sleep(180);
+                if(roundSite(String.valueOf(siteList))){
+                    siteResponse.setOutputError("error: ");
+                    siteResponse.setOutputResult("Индексация уже запущена");
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            futures.add(future);
+        });
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        return true;
     }
 }
 
