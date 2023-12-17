@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import searchengine.dto.statistics.StatisticsResponse;
+import searchengine.dto.statistics.StatisticsSiteResponse;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 import searchengine.services.StatisticSiteServiceImpl;
@@ -30,7 +31,7 @@ public class ApiController {
     }
 
     @GetMapping("/startIndexing")
-    public ResponseEntity<Boolean> startIndexing(){
+    public ResponseEntity<StatisticsSiteResponse> startIndexing(){
         return ResponseEntity.ok(siteService.roundSites());
     }
 

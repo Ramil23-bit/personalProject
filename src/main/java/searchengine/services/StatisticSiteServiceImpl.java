@@ -1,10 +1,15 @@
 package searchengine.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import searchengine.config.SitesList;
 import searchengine.dto.statistics.StatisticsSiteResponse;
@@ -15,7 +20,9 @@ import searchengine.model.Site;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +34,7 @@ public class StatisticSiteServiceImpl  {
     private final SiteRepository siteRepository;
     private final PageRepository pageRepository;
     private final SitesList sitesList;
+    private ExecutorService executorService;
 
     public void createEntry() {
         Site site = new Site();
@@ -51,6 +59,29 @@ public class StatisticSiteServiceImpl  {
         }
         Long deleteDataSite = siteRepository.deleteByUrl(url);
         Long deleteDataPage = pageRepository.deleteByPath(url);
+    }
+    @SneakyThrows
+    public StatisticsSiteResponse roundSites() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        StatisticsSiteResponse siteResponse = new StatisticsSiteResponse();
+
+        if (!executorService.isShutdown()) {
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+            sitesList.getSites().forEach(siteList -> {
+                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> roundSite(String.valueOf(siteList)), executorService);
+                futures.add(future);
+            });
+            objectMapper.writeValueAsString(siteResponse.getError());
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        }else {
+            objectMapper.writeValueAsString(siteResponse.getError());
+        }
+        return siteResponse;
+    }
+
+    @PostConstruct
+    public ExecutorService ExecutorServiceInitialization(){
+        return executorService = Executors.newCachedThreadPool();
     }
 
     private boolean roundSite(String url) {
@@ -98,34 +129,7 @@ public class StatisticSiteServiceImpl  {
         page.setPath(attribute);
     }
 
-    public Boolean roundSites() {
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
-        ExecutorService executorService = null;
-        sitesList.getSites().forEach(siteList->{
-            CompletableFuture<Void> future = CompletableFuture.runAsync(()-> roundSite(String.valueOf(siteList)), executorService);
-            StatisticsSiteResponse siteResponse = new StatisticsSiteResponse();
-            if(!executorService.isShutdown()){
-                siteResponse.setOutputError("error: Индексация уже запущена");
-            }else {
-                siteResponse.setOutputResult("result: ");
-                siteResponse.setResult(true);
-            }
 
-            try {
-                Thread.sleep(180);
-                if(roundSite(String.valueOf(siteList))){
-                    siteResponse.setOutputError("error: ");
-                    siteResponse.setOutputResult("Индексация уже запущена");
-                }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            futures.add(future);
-        });
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-
-        return true;
-    }
 }
 
 /*
