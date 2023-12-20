@@ -23,8 +23,7 @@ public class ApiController {
     private final StatisticsService statisticsService;
     private final SiteRepository siteRepository;
     private final PageRepository pageRepository;
-    @Autowired
-    private StatisticSiteServiceImpl siteService;
+    private final StatisticSiteServiceImpl siteServiceImpl;
     @GetMapping("/statistics")
     public ResponseEntity<StatisticsResponse> statistics() {
         return ResponseEntity.ok(statisticsService.getStatistics());
@@ -32,7 +31,7 @@ public class ApiController {
 
     @GetMapping("/startIndexing")
     public ResponseEntity<StatisticsSiteResponse> startIndexing(){
-        return ResponseEntity.ok(siteService.roundSites());
+        return ResponseEntity.ok(siteServiceImpl.roundSites());
     }
 
 }

@@ -3,13 +3,9 @@ package searchengine.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import searchengine.config.SitesList;
 import searchengine.dto.statistics.StatisticsSiteResponse;
@@ -22,7 +18,6 @@ import searchengine.repository.SiteRepository;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,22 +55,25 @@ public class StatisticSiteServiceImpl  {
         Long deleteDataSite = siteRepository.deleteByUrl(url);
         Long deleteDataPage = pageRepository.deleteByPath(url);
     }
-    @SneakyThrows
+
     public StatisticsSiteResponse roundSites() {
-        ObjectMapper objectMapper = new ObjectMapper();
         StatisticsSiteResponse siteResponse = new StatisticsSiteResponse();
 
         if (!executorService.isShutdown()) {
             List<CompletableFuture<Void>> futures = new ArrayList<>();
             sitesList.getSites().forEach(siteList -> {
-                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> roundSite(String.valueOf(siteList)), executorService);
+                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> roundSite(String.valueOf(siteList))
+                        ,executorService);
                 futures.add(future);
             });
-            objectMapper.writeValueAsString(siteResponse.getError());
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-        }else {
-            objectMapper.writeValueAsString(siteResponse.getError());
+            siteResponse.setError("result: ");
+            siteResponse.setResult(true);
+        } else {
+            siteResponse.setError("result: Индексация уже запущена");
+            siteResponse.setResult(false);
         }
+
         return siteResponse;
     }
 
@@ -89,8 +87,7 @@ public class StatisticSiteServiceImpl  {
 
         try {
             doc = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 6.2;) AppleWebKit/602.40 " +
-                            "(KHTML, like Gecko) Chrome/52.0.1538.324 Safari/602")
+                    .userAgent("Chrome/55.0.2872.335 Safari/602")
                     .referrer("http://www.google.com")
                     .get();
         } catch (Exception e) {
@@ -118,7 +115,7 @@ public class StatisticSiteServiceImpl  {
         Element elementSite = new Element(url);
         Page page = new Page();
         Site site = new Site();
-        String attribute = elementSite.attr("href");
+        String attribute = elementSite.attr("abs:href");
         System.out.printf("Execute task on thread %s%n", Thread.currentThread());
 
         if(!attribute.startsWith(url)){
