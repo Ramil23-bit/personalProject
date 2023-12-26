@@ -27,7 +27,7 @@ public class Site {
     //@CreationTimestamp
     @UpdateTimestamp
     private Instant status_time;
-    @Column(name = "last_error", columnDefinition = "TEXT" ,nullable = false)
+    @Column(name = "last_error", columnDefinition = "TEXT")
     private String last_error;
     @Column(name = "url", columnDefinition = "VARCHAR(255)" ,nullable = false)
     private String url;

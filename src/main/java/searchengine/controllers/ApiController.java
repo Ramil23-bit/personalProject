@@ -1,7 +1,6 @@
 package searchengine.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,8 @@ import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 import searchengine.services.StatisticSiteServiceImpl;
 import searchengine.services.StatisticsService;
+
+import java.io.IOException;
 
 @RestController
 @Configuration
@@ -30,8 +31,13 @@ public class ApiController {
     }
 
     @GetMapping("/startIndexing")
-    public ResponseEntity<StatisticsSiteResponse> startIndexing(){
+    public ResponseEntity<StatisticsSiteResponse> startIndexing() throws IOException {
         return ResponseEntity.ok(siteServiceImpl.roundSites());
+    }
+
+    @GetMapping("/stopIndexing")
+    public ResponseEntity<StatisticsSiteResponse> stopIndexing(){
+        return ResponseEntity.ok(siteServiceImpl.stopIndexing());
     }
 
 }
