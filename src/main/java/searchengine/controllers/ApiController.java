@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import searchengine.dto.statistics.StatisticsResponse;
@@ -38,6 +39,11 @@ public class ApiController {
     @GetMapping("/stopIndexing")
     public ResponseEntity<StatisticsSiteResponse> stopIndexing(){
         return ResponseEntity.ok(siteServiceImpl.stopIndexing());
+    }
+
+    @PostMapping("/indexPage")
+    public ResponseEntity<StatisticsSiteResponse> indexPage(String url) throws IOException {
+        return ResponseEntity.ok(siteServiceImpl.addPageToIndex("https://dimonvideo.ru/"));
     }
 
 }

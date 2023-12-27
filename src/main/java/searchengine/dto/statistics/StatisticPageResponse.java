@@ -3,8 +3,7 @@ package searchengine.dto.statistics;
 import lombok.Data;
 
 @Data
-public class StatisticsSiteResponse {
+public class StatisticPageResponse {
     private String error;
     private boolean result;
-
 }
