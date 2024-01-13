@@ -5,7 +5,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import searchengine.config.SitesList;
+import searchengine.dto.statistics.StatisticPageResponse;
 import searchengine.dto.statistics.StatisticsSiteResponse;
 import searchengine.exception.StatisticSiteException;
 import searchengine.model.EnumForTable;
@@ -18,6 +20,8 @@ import searchengine.repository.SiteRepository;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -92,17 +96,6 @@ public class StatisticSiteServiceImpl  {
 
     private boolean roundSite(String url) {
         Site site = new Site();
-        Document doc;
-
-        try {
-            doc = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows; Windows NT 6.3; x64) AppleWebKit/537.1 (KHTML, like Gecko)" +
-                            "Chrome/47.0.1083.353 Safari/535")
-                    .referrer("https://www.google.com")
-                    .get();
-        } catch (Exception e) {
-            throw new StatisticSiteException(e.getMessage());
-        }
 
         try {
             controlSite(url);
@@ -113,41 +106,21 @@ public class StatisticSiteServiceImpl  {
         return true;
     }
 
-    public StatisticsSiteResponse addPageToIndex(String url) throws IOException {
-        StatisticsSiteResponse siteResponse = new StatisticsSiteResponse();
+    public StatisticPageResponse addPageToIndex(String url) throws IOException {
         Search search = new Search();
+        StatisticPageResponse pageResponse = new StatisticPageResponse();
         Page page = new Page();
-        Site site = new Site();
-        url = "https://dimonvideo.ru/";
+        String regex = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-        URL urlCode = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) urlCode.openConnection();
-        int responseCode = connection.getResponseCode();
-
-        Document document = Jsoup.connect(url)
-                .userAgent("Mozilla/5.0 (Windows; Windows NT 6.3; x64) AppleWebKit/537.1 (KHTML, like Gecko)" +
-                        "Chrome/47.0.1083.353 Safari/535")
-                .referrer("https://www.google.com")
-                .get();
-        Element elementSite = document.select("a").first();
-        String htmlCode = Objects.requireNonNull(elementSite).outerHtml();
-
-        if(!siteCheck(url)){
-            siteResponse.setResult(false);
-            siteResponse.setError("Данная страница находится за пределами сайтов, указанных в конфигурационном файле");
+        if(!siteCheck(url, regex)){
+            pageResponse.setResult(false);
+            pageResponse.setUrl("Данная страница находится за пределами сайтов, указанных в конфигурационном файле");
         }
-        roundSites();
-        page.setPath(url);
-        if(!page.getPath().matches(url)){
-            page.setPath(url);
-            page.setCode(responseCode);
-            page.setContent(htmlCode);
-            page.setSiteId(site);
-            pageRepository.save(page);
-        }
+        roundSite(url);
         search.setPageId(page);
         searchRepository.save(search);
-        return siteResponse;
+        controlSite(url);
+        return pageResponse;
     }
 
     public void controlSite(String url) throws IOException {
@@ -197,10 +170,14 @@ public class StatisticSiteServiceImpl  {
         return siteResponse;
     }
 
-    private boolean siteCheck(String url){
-        Pattern pattern = Pattern.compile("^[a-z]\\:\\/\\/ + [a-z] + \\.[a-z] + \\/\\/$");
-        Matcher matcher = pattern.matcher(url);
-        return matcher.matches();
+    public static boolean siteCheck(String url, String pattern1){
+        try {
+            Pattern patt = Pattern.compile(pattern1);
+            Matcher matcher = patt.matcher(url);
+            return matcher.matches();
+        } catch (RuntimeException e) {
+            return false;
+    }
     }
 }
 
