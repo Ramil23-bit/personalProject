@@ -10,10 +10,7 @@ import searchengine.config.SitesList;
 import searchengine.dto.statistics.StatisticPageResponse;
 import searchengine.dto.statistics.StatisticsSiteResponse;
 import searchengine.exception.StatisticSiteException;
-import searchengine.model.EnumForTable;
-import searchengine.model.Page;
-import searchengine.model.Search;
-import searchengine.model.Site;
+import searchengine.model.*;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SearchRepository;
 import searchengine.repository.SiteRepository;
@@ -41,9 +38,12 @@ public class StatisticSiteServiceImpl  {
     private final SitesList sitesList;
     private final SearchRepository searchRepository;
     private ExecutorService executorService;
+    private Search search;
+    private Site site;
+    private Lemma lemma;
+    private Page page;
 
     public void createEntry() {
-        Site site = new Site();
         site.setStatus(EnumForTable.INDEXING);
         siteRepository.save(site);
     }
@@ -95,7 +95,6 @@ public class StatisticSiteServiceImpl  {
     }
 
     private boolean roundSite(String url) {
-        Site site = new Site();
 
         try {
             controlSite(url);
@@ -107,9 +106,8 @@ public class StatisticSiteServiceImpl  {
     }
 
     public StatisticPageResponse addPageToIndex(String url) throws IOException {
-        Search search = new Search();
         StatisticPageResponse pageResponse = new StatisticPageResponse();
-        Page page = new Page();
+        LemmaFinderService lemmaFinderService = new LemmaFinderService();
         String regex = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
         if(!siteCheck(url, regex)){
@@ -117,15 +115,16 @@ public class StatisticSiteServiceImpl  {
             pageResponse.setUrl("Данная страница находится за пределами сайтов, указанных в конфигурационном файле");
         }
         roundSite(url);
+        lemmaFinderService.collectLemmas(url);
         search.setPageId(page);
+        search.setLemmaId(lemma);
+        search.setPercentLemma(4.02f);
         searchRepository.save(search);
         controlSite(url);
         return pageResponse;
     }
 
     public void controlSite(String url) throws IOException {
-        Page page = new Page();
-        Site site = new Site();
         Document document = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (Windows; Windows NT 6.3; x64) AppleWebKit/537.1 (KHTML, like Gecko)" +
                         "Chrome/47.0.1083.353 Safari/535")
@@ -139,7 +138,7 @@ public class StatisticSiteServiceImpl  {
         HttpURLConnection connection = (HttpURLConnection) urlCode.openConnection();
         int responseCode = connection.getResponseCode();
 
-        String htmlCode = elementSite.outerHtml();
+        String html = document.html();
 
         System.out.printf("Execute task on thread %s%n", Thread.currentThread());
 
@@ -156,7 +155,7 @@ public class StatisticSiteServiceImpl  {
 
         page.setPath(attribute);
         page.setCode(responseCode);
-        page.setContent(htmlCode);
+        page.setContent(html);
         page.setSiteId(site);
         pageRepository.save(page);
 
@@ -180,12 +179,3 @@ public class StatisticSiteServiceImpl  {
     }
     }
 }
-
-/*
-Document doc = Jsoup.connect("http://example.com")
-  .data("query", "Java")
-  .userAgent("Mozilla")
-  .cookie("auth", "token")
-  .timeout(3000)
-  .post();
- */
