@@ -4,20 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.morphology.LuceneMorphology;
 import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.safety.Safelist;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import searchengine.dto.statistics.SaveWordLemmas;
-import searchengine.exception.StatisticLemmaException;
 import searchengine.model.Lemma;
-import searchengine.model.Page;
-import searchengine.model.Search;
 import searchengine.model.Site;
 import searchengine.repository.LemmaRepository;
-import searchengine.repository.SearchRepository;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,19 +17,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class LemmaFinderService {
-    private LuceneMorphology luceneMorphology;
-    private LemmaRepository lemmaRepository;
-    private SearchRepository searchRepository;
-
-    public static LemmaFinderService getInstance() throws IOException {
-        LuceneMorphology morphology= new RussianLuceneMorphology();
-        return new LemmaFinderService(morphology);
-    }
-
-    public LemmaFinderService(LuceneMorphology luceneMorphology) {
-        this.luceneMorphology = luceneMorphology;
-    }
-
+    private final LemmaRepository lemmaRepository;
 
     /**
      * Метод разделяет текст на слова, находит все леммы и считает их количество.
@@ -46,11 +25,14 @@ public class LemmaFinderService {
      * @param text текст из которого будут выбираться леммы
      * @return ключ является леммой, а значение количеством найденных лемм
      */
-    public Map<String, Integer> collectLemmas(String text) {
+    public Map<String, Integer> collectLemmas(String text) throws IOException {
+        LuceneMorphology luceneMorphology = new RussianLuceneMorphology();
         String[] words = arrayContainsRussianWords(text);
         HashMap<String, Integer> lemmas = new HashMap<>();
         Lemma lemma = new Lemma();
         Site site = new Site();
+        String keyLemma = null;
+        Integer valueLemma = 0;
 
         for (String word : words) {
                 if (word.isBlank()) {
@@ -71,17 +53,17 @@ public class LemmaFinderService {
 
                 if (lemmas.containsKey(normalWord)) {
                     lemmas.put(normalWord, lemmas.get(normalWord) + 1);
-                    for(Map.Entry<String, Integer> entry : lemmas.entrySet()){
-                        String keyLemma = entry.getKey();
-                        Integer valueLemma = entry.getValue();
-                        lemma.setLemma(keyLemma);
-                        lemma.setFrequency(valueLemma);
-                        lemma.setSiteId(site);
-                        lemmaRepository.save(lemma);
-                    }
                 } else {
                     lemmas.put(normalWord, 1);
                 }
+            for(Map.Entry<String, Integer> entry : lemmas.entrySet()){
+                keyLemma = entry.getKey();
+                valueLemma = entry.getValue();
+                lemma.setLemma(keyLemma);
+                lemma.setFrequency(valueLemma);
+                lemma.setSiteId(site);
+                lemmaRepository.save(lemma);
+            }
         }
 
         return lemmas;
@@ -108,7 +90,8 @@ public class LemmaFinderService {
                 .split("\\s+");
     }
 
-    private boolean isCorrectWordForm(String word) {
+    private boolean isCorrectWordForm(String word) throws IOException {
+        LuceneMorphology luceneMorphology = new RussianLuceneMorphology();
         String WORD_TYPE_REGEX = "\\W\\w&&[^а-яА-Я\\s]";
         List<String> wordInfo = luceneMorphology.getMorphInfo(word);
         for (String morphInfo : wordInfo) {
@@ -119,9 +102,10 @@ public class LemmaFinderService {
         return true;
     }
 
-    private String clearWebSiteFromHtml(String htmlCodeWebSite){
-        Page page = new Page();
-        htmlCodeWebSite = page.getContent();
-        return Jsoup.clean(htmlCodeWebSite, Safelist.none());
-    }
+//    public String clearWebSiteFromHtml(String url){
+//        Page page = new Page();
+//        String htmlCodeWebSite = page.getContent();
+//        String cleanCode = Jsoup.clean(htmlCodeWebSite, Safelist.none());
+//        return cleanCode;
+//    }
 }

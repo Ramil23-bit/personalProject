@@ -1,24 +1,24 @@
 package searchengine.services;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.lucene.morphology.LuceneMorphology;
+import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import searchengine.config.SitesList;
 import searchengine.dto.statistics.StatisticPageResponse;
 import searchengine.dto.statistics.StatisticsSiteResponse;
 import searchengine.exception.StatisticSiteException;
 import searchengine.model.*;
+import searchengine.repository.LemmaRepository;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SearchRepository;
 import searchengine.repository.SiteRepository;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -37,13 +37,11 @@ public class StatisticSiteServiceImpl  {
     private final PageRepository pageRepository;
     private final SitesList sitesList;
     private final SearchRepository searchRepository;
+    private final LemmaFinderService lemmaFinderService;
     private ExecutorService executorService;
-    private Search search;
-    private Site site;
-    private Lemma lemma;
-    private Page page;
 
     public void createEntry() {
+        Site site = new Site();
         site.setStatus(EnumForTable.INDEXING);
         siteRepository.save(site);
     }
@@ -85,7 +83,6 @@ public class StatisticSiteServiceImpl  {
             siteResponse.setError("result: Индексация уже запущена");
             siteResponse.setResult(false);
         }
-
         return siteResponse;
     }
 
@@ -95,7 +92,7 @@ public class StatisticSiteServiceImpl  {
     }
 
     private boolean roundSite(String url) {
-
+        Site site = new Site();
         try {
             controlSite(url);
             throw new StatisticSiteException("HTML code not found");
@@ -106,8 +103,12 @@ public class StatisticSiteServiceImpl  {
     }
 
     public StatisticPageResponse addPageToIndex(String url) throws IOException {
+        Search search = new Search();
+        Page page = new Page();
+        Lemma lemma = new Lemma();
+
         StatisticPageResponse pageResponse = new StatisticPageResponse();
-        LemmaFinderService lemmaFinderService = new LemmaFinderService();
+
         String regex = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
         if(!siteCheck(url, regex)){
@@ -115,16 +116,18 @@ public class StatisticSiteServiceImpl  {
             pageResponse.setUrl("Данная страница находится за пределами сайтов, указанных в конфигурационном файле");
         }
         roundSite(url);
-        lemmaFinderService.collectLemmas(url);
+        controlSite(url);
         search.setPageId(page);
         search.setLemmaId(lemma);
         search.setPercentLemma(4.02f);
         searchRepository.save(search);
-        controlSite(url);
         return pageResponse;
     }
 
     public void controlSite(String url) throws IOException {
+        Site site = new Site();
+        Page page = new Page();
+
         Document document = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (Windows; Windows NT 6.3; x64) AppleWebKit/537.1 (KHTML, like Gecko)" +
                         "Chrome/47.0.1083.353 Safari/535")
@@ -159,6 +162,7 @@ public class StatisticSiteServiceImpl  {
         page.setSiteId(site);
         pageRepository.save(page);
 
+        lemmaFinderService.collectLemmas(html);
     }
     public StatisticsSiteResponse stopIndexing(){
         StatisticsSiteResponse siteResponse = new StatisticsSiteResponse();
