@@ -1,12 +1,11 @@
 package searchengine.services;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.lucene.morphology.LuceneMorphology;
-import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
+import org.springframework.test.web.servlet.MockMvc;
 import searchengine.config.SitesList;
 import searchengine.dto.statistics.StatisticPageResponse;
 import searchengine.dto.statistics.StatisticsSiteResponse;
@@ -116,7 +115,6 @@ public class StatisticSiteServiceImpl  {
             pageResponse.setUrl("Данная страница находится за пределами сайтов, указанных в конфигурационном файле");
         }
         roundSite(url);
-        controlSite(url);
         search.setPageId(page);
         search.setLemmaId(lemma);
         search.setPercentLemma(4.02f);
@@ -127,6 +125,7 @@ public class StatisticSiteServiceImpl  {
     public void controlSite(String url) throws IOException {
         Site site = new Site();
         Page page = new Page();
+        Lemma lemma = new Lemma();
 
         Document document = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (Windows; Windows NT 6.3; x64) AppleWebKit/537.1 (KHTML, like Gecko)" +

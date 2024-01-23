@@ -29,10 +29,7 @@ public class LemmaFinderService {
         LuceneMorphology luceneMorphology = new RussianLuceneMorphology();
         String[] words = arrayContainsRussianWords(text);
         HashMap<String, Integer> lemmas = new HashMap<>();
-        Lemma lemma = new Lemma();
-        Site site = new Site();
-        String keyLemma = null;
-        Integer valueLemma = 0;
+        Site site =new Site();
 
         for (String word : words) {
                 if (word.isBlank()) {
@@ -56,16 +53,23 @@ public class LemmaFinderService {
                 } else {
                     lemmas.put(normalWord, 1);
                 }
-            for(Map.Entry<String, Integer> entry : lemmas.entrySet()){
-                keyLemma = entry.getKey();
-                valueLemma = entry.getValue();
-                lemma.setLemma(keyLemma);
-                lemma.setFrequency(valueLemma);
-                lemma.setSiteId(site);
-                lemmaRepository.save(lemma);
-            }
         }
+        for(int j = 0; j < 10; j++){
+            List<Lemma> lemmaList = new ArrayList<>();
+            for(int i =0; i == lemmaList.size(); i++) {
+                for(Map.Entry<String, Integer> entry : lemmas.entrySet()){
+                    Lemma lemma = new Lemma();
+                    String keyLemma = entry.getKey();
+                    Integer valueLemma = entry.getValue();
+                    lemma.setLemma(keyLemma);
+                    lemma.setFrequency(valueLemma);
+                    lemma.setSiteId(site);
+                    lemmaList.add(lemma);
+                }
+                lemmaRepository.saveAll(lemmaList);
+            }
 
+        }
         return lemmas;
     }
 
